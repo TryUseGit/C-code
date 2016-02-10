@@ -24,9 +24,9 @@ void Gamewidget::paintEvent(QPaintEvent *)
     }
     for(int i=2;i<ROW;++i){
         for(int j =2;j<COL;++j){
-            if(chessboard[i][j]==1)
+            if(chessboard[i][j]==2)
                 painter->drawImage(QRectF(j*20,i*20,20,20),QImage(":/img/img/white_chess.png"));
-            else if(chessboard[i][j]==2)
+            else if(chessboard[i][j]==1)
                 painter->drawImage(QRectF(j*20,i*20,20,20),QImage(":/img/img/black_chess.png"));
         }
     }
@@ -36,10 +36,10 @@ void Gamewidget::mousePressEvent(QMouseEvent *event)
 {
     pos_x = event->y()/20;
     pos_y=event->x()/20;
-    qDebug()<<pos_x<<pos_y;
+//    qDebug()<<pos_x<<pos_y;
     if(pos_x>=2&&pos_x<=ROW&&pos_y>=2&&pos_y<=COL&&chessboard[pos_x][pos_y]==0){
         if (player % 2 == 1) {
-            chessboard[pos_x][pos_y] = 1;
+            chessboard[pos_x][pos_y] = 2;
             this->update();
             if (winjudge()) {
                 emit win();
@@ -47,7 +47,7 @@ void Gamewidget::mousePressEvent(QMouseEvent *event)
 
         }
         else {
-            chessboard[pos_x][pos_y] = 2;
+            chessboard[pos_x][pos_y] = 1;
             this->update();
             if (winjudge()) {
                 emit win();
@@ -60,7 +60,7 @@ void Gamewidget::mousePressEvent(QMouseEvent *event)
 
 bool Gamewidget::winjudge()
 {
-    int currentplayer = player % 2;
+    int currentplayer = player % 2 + 1;
         int x, y;
         int flag = 1;
         for (x = pos_x, y = pos_y;x >= 2 && x<ROW;) {
@@ -136,13 +136,15 @@ bool Gamewidget::winjudge()
 
 void Gamewidget::winning()
 {
-    if(player%2==1){
-        if(QMessageBox::information(this,"","player 1 win",QMessageBox::StandardButton::Ok)==QMessageBox::Ok)
-        this->close();
+    if(player==1){
+        if(QMessageBox::information(this,"","player 1 win",QMessageBox::StandardButton::Ok)==QMessageBox::Ok){
+            this->close();
+        }
     }
     else{
-        if(QMessageBox::information(this,"","player 2 win",QMessageBox::StandardButton::Ok)==QMessageBox::Ok)
+        if(QMessageBox::information(this,"","player 2 win",QMessageBox::StandardButton::Ok)==QMessageBox::Ok){
             this->close();
+        }
     }
 }
 

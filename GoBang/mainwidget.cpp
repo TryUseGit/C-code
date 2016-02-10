@@ -22,7 +22,8 @@ MainWidget::~MainWidget()
 void MainWidget::start_click()
 {
     gw = new Gamewidget(this);    
-    gw->show();  
+    gw->show();
+    this->resize(600,400);
 }
 
 void MainWidget::exit_click()
